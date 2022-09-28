@@ -239,26 +239,49 @@ void CartesianImpedanceExampleController::update(const ros::Time& /*time*/,
   //position_d_target_<<1.0,1.0,0.5;
 
   
-  if((begin_t>3.00)&&(begin_t<6.00)){
+ //steps to go from one point to another in trajectory
+  if(begin_t > 4.00){
+  if((begin_t > k + 4.00)&&(begin_t < k + 5.00)){
+  cout<<"position_d_target_ = "<<position_d_target_<<"\n";
+  cout<<"error ="<<error_x<<"\n";
+  position_d_target_ = lit[count];
+  }
+
+  else{
+    k=k+1.0;
+    count++;
+  }
+  }
+  
+  /*
+  if((begin_t>4.00)&&(begin_t<4.50)){
   cout<<"position_d_target_ = "<<position_d_target_<<"\n";
   cout<<"error ="<<error_x<<"\n";
   position_d_target_ = lit[0];
   
   }
 
-  if((begin_t>6.00)&&(begin_t<9.00)){
+  if((begin_t>4.50)&&(begin_t<5.00)){
   cout<<"position_d_target_ = "<<position_d_target_<<"\n";
   cout<<"error ="<<error_x<<"\n";
   position_d_target_ = lit[1];
   
   }
 
-  if(begin_t>9.00){
+  if((begin_t>5.00)&&(begin_t<5.50)){
   cout<<"position_d_target_ = "<<position_d_target_<<"\n";
   cout<<"error ="<<error_x<<"\n";
   position_d_target_ = lit[2];
   
   }
+  
+  if((begin_t>5.50)&&(begin_t<6.00)){
+  cout<<"position_d_target_ = "<<position_d_target_<<"\n";
+  cout<<"error ="<<error_x<<"\n";
+  position_d_target_ = lit[3];
+  
+  }
+  */
 
 
   /*
