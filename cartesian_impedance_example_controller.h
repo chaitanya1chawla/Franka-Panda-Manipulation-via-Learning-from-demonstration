@@ -57,8 +57,9 @@ class CartesianImpedanceExampleController : public controller_interface::MultiIn
   std::mutex position_and_orientation_d_target_mutex_;
   Eigen::Vector3d position_d_target_;
   Eigen::Quaterniond orientation_d_target_;
-
-  Eigen::Vector3d lit[3];
+  
+  //Check here if there is a segmentation fault
+  Eigen::Vector3d lit[100];
   int k;
 
   // Dynamic reconfigure
