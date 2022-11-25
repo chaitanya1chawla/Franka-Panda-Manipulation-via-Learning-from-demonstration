@@ -1,10 +1,16 @@
 // Copyright (c) 2017 Franka Emika GmbH
 // Use of this source code is governed by the Apache-2.0 license, see LICENSE
+
+//"code written by me" is written over some lines of code
 #include <franka_example_controllers/cartesian_impedance_example_controller.h>
 
 #include <cmath>
 #include <memory>
 #include <iostream>
+#include <fstream>
+#include <stdlib.h>
+#include <string>
+//am i allowed to use multiple namespaces in a file
 using namespace std;
 #include <typeinfo>
 
@@ -12,6 +18,12 @@ using namespace std;
 #include <franka/robot_state.h>
 #include <pluginlib/class_list_macros.h>
 #include <ros/ros.h>
+#define PI 3.14159265
+
+#include <chrono>
+#include <thread>
+using namespace std::this_thread; // sleep_for, sleep_until
+using namespace std::chrono; // nanoseconds, system_clock, seconds
 
 #include <franka_example_controllers/pseudo_inversion.h>
 
@@ -167,13 +179,55 @@ void CartesianImpedanceExampleController::blabla(){
 
 void CartesianImpedanceExampleController::update(const ros::Time& /*time*/,
                                                  const ros::Duration& /*period*/) {
+  
+  //"code written by me" till 206
   static int flag=0;
+  static double kk=0.0, dist_squared=0.0, dist=0.0;
+  static int count=0;
+  static int ii=0;
+  static int ctr=0;
+  static int flag_var=0;
 
+  //creating a custom trajectory. should be replaced by trajectory from CV part
   if (flag==0){
-      lit[0]<<0.0, 0.5, 0.5;
-      lit[1]<<0.0, 0.0, 1.0;
-      lit[2]<<0.0, -0.5, 0.5;
+
+    fstream newfile;
+    newfile.open("/home/chaitanya/catkin_ws/src/franka_ros/franka_example_controllers/src/trajectory.txt",ios::in);
+    string tp; string delimiter = " ";
+    size_t pos = 0;
+
+    //array length needs to be changed here to 3 coordinates
+    string token[3]; 
+    int cc=0;
+
+    while(getline(newfile,tp)){
+      int i=0;
+      while ((pos = tp.find(delimiter)) != string::npos) {
+        token[i] = tp.substr(0, pos);
+        //cout << token << std::endl;
+        tp.erase(0, pos + delimiter.length());
+        i++;
+      }
+      token[i]= tp;
+      
+      // taking every 10th point from the trajectory
+      if(ctr%7==0){
+        lit[cc] <<atof(token[0].c_str()), atof(token[1].c_str()), atof(token[2].c_str());
+        if(cc!=0){
+          dist_squared = pow((lit[cc][0]-lit[cc-1][0]),2) + pow((lit[cc][1]-lit[cc-1][1]),2) + pow((lit[cc][2]-lit[cc-1][2]),2);
+          dist = sqrt(dist_squared);
+          // if dist between two neighbouring points is less than threshold, it skips the point
+          if(dist < 0.002){
+            cc=cc-1;
+          }
+        } 
+        cc++;
+      }
+      ctr++;
+    }
+      cout<<lit;
       flag=1;
+      flag_var=cc;
   }
 
   // get state variables
@@ -183,24 +237,9 @@ void CartesianImpedanceExampleController::update(const ros::Time& /*time*/,
       model_handle_->getZeroJacobian(franka::Frame::kEndEffector);
 
   
-/*
-  double secs_1 =ros::Time::now().toSec();
-  double secs_2 =begin.toSec();  
-  
-  cout<<"time now = "<<secs_1<<"\n";
-  cout<<"begin = "<<begin<<"\n";
-
-  if (secs_1 - secs_2 > 4.00) {
-    begin = ros::Time::now();
-  }  
-
-*/
-
   //important!!!!
   //position_d_target_ << 0.0,0.5,0.5;
-/*  static int k=0;
-  static Eigen::Vector3d lit[100];
-
+/* 
   int ii=0;
   for(ii =-50; ii < 51; ii=ii+100)
   {
@@ -221,8 +260,6 @@ void CartesianImpedanceExampleController::update(const ros::Time& /*time*/,
       robot_state.tau_J_d.data());
   Eigen::Affine3d transform(Eigen::Matrix4d::Map(robot_state.O_T_EE.data()));
   Eigen::Vector3d position(transform.translation());
-  //cout<<"position_d_ = initial_transform.translation() = "<< position_d_;
-  //Eigen::Vector3d position(0,0.2,0.8);
   Eigen::Quaterniond orientation(transform.rotation());
 
   // compute error to desired pose
@@ -230,81 +267,60 @@ void CartesianImpedanceExampleController::update(const ros::Time& /*time*/,
   Eigen::Matrix<double, 6, 1> error;
   error.head(3) << position - position_d_;
   
+  
+  //"code written by me" till 300
+
   ros::Time begin = ros::Time::now();
   double begin_t=begin.toSec();
 
   double error_x = error.head(3).norm();
+
   // cout<<"error = "<<error_x<<"\n";
 
   //position_d_target_<<1.0,1.0,0.5;
 
-  
- //steps to go from one point to another in trajectory
-  if(begin_t > 4.00){
-  if((begin_t > k + 4.00)&&(begin_t < k + 5.00)){
+  //steps to go from one point to another in trajectory
   cout<<"position_d_target_ = "<<position_d_target_<<"\n";
   cout<<"error ="<<error_x<<"\n";
-  position_d_target_ = lit[count];
-  }
+//  if(begin_t > 1.50 && begin_t < 4.00){
+//    position_d_target_ << 0.24, -0.04, 0.03;
+//  }
 
-  else{
-    k=k+1.0;
-    count++;
-  }
-  }
-  
-  /*
-  if((begin_t>4.00)&&(begin_t<4.50)){
-  cout<<"position_d_target_ = "<<position_d_target_<<"\n";
-  cout<<"error ="<<error_x<<"\n";
-  position_d_target_ = lit[0];
-  
-  }
 
-  if((begin_t>4.50)&&(begin_t<5.00)){
-  cout<<"position_d_target_ = "<<position_d_target_<<"\n";
-  cout<<"error ="<<error_x<<"\n";
-  position_d_target_ = lit[1];
-  
-  }
+  if(begin_t > 3.00){
+    //position_d_target_ = lit[2];
+    cout<<"test++";
+    
+    if( (error_x < 0.07) && ( begin_t > kk+1.20 ) ){
+      cout<<"test**";
+      position_d_target_ = lit[count];
+      kk=kk+2;
+      position_d_target_ = lit[count];
+      count++;
+      cout<<"position_d_target_ = "<<position_d_target_<<"\n";
+      cout<<"error ="<<error_x<<"\n";
+      //sleep_for(seconds(2));
+    
+//    if(lit[count] == lit[flag_var]){
+//      position_d_target_<< 0.03, 0.00, 0.62;
+//    }
+    }
+    cout<<"count = "<<count<<"\n";
+/*
+    if( (begin_t > kk + 4.00 ) && ( begin_t < kk + 5.00) ){
+    cout<<"position_d_target_ = "<<position_d_target_<<"\n";
+    cout<<"error ="<<error_x<<"\n";
+    position_d_target_ = lit[count];
+    }
 
-  if((begin_t>5.00)&&(begin_t<5.50)){
-  cout<<"position_d_target_ = "<<position_d_target_<<"\n";
-  cout<<"error ="<<error_x<<"\n";
-  position_d_target_ = lit[2];
-  
-  }
-  
-  if((begin_t>5.50)&&(begin_t<6.00)){
-  cout<<"position_d_target_ = "<<position_d_target_<<"\n";
-  cout<<"error ="<<error_x<<"\n";
-  position_d_target_ = lit[3];
-  
-  }
+    else{
+      cout<<"scheisse";
+      kk=kk+1.0;
+      count++;
+    }
   */
 
-
-  /*
-  if ((error_x < 0.30)&&(k==0)){
-     //position_d_target update!!
-    k++;
-    position_d_target_ << 0.0,0.5,0.5;
-  }
-
-  if ((error_x < 0.30)&&(k==1)){
-     //position_d_target update!!
-    k++;
-    position_d_target_ << 0.0,0.0,1.0;
-  }
-
-  if ((error_x < 0.30)&&(k==2)){
-     //position_d_target update!!
-    k++;
-    position_d_target_ << 0.0,-0.5,0.5;
-  }    
-  //cout<<position_d_target_<<"\n";
-  
-  */
+  }  
 
 
   // orientation error
