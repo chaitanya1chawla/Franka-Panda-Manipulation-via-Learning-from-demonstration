@@ -15,7 +15,7 @@ mp_pose = mp.solutions.pose
 
 # For webcam input:
 #-->  '#put 0 for webcam input or "" video address
-# different videos need to be uploaded manually, and name of json file also needs to be respectively updated 
+#--> different videos need to be uploaded manually, and name of json file also needs to be respectively updated (line)
 cap = cv2.VideoCapture("/home/dhrikarl/Videos/Webcam/lifting_object_4.webm")
 with mp_pose.Pose(
         modelgedit_complexity=0,
@@ -50,6 +50,7 @@ with mp_pose.Pose(
     #file1 = open("points_for_dmps.txt", "w")
 
     # using json file to record data points to be used in dmp
+#--> update the following file name for each trajectory
     out_file = open("myfile4.json", "w")
 
     #array which displays last 20 points in the graph
