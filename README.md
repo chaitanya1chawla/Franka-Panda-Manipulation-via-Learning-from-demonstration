@@ -14,7 +14,16 @@ Link to [Paper](https://docs.google.com/document/d/15dwVdk-WKLVMnLVukNsmk3NElljA
 Link to [Final Presentation](https://1drv.ms/p/s!AgS-uMOuiZu9hQuuwWgZkoKYTLNy).
 
 ## Instructions
-Clone and installed the original franka_ros repo (by franka emika) from gitlab.
+
+Installation - 
+```
+pip install -e .
+```
+
+Clone the original franka_ros repo (by franka emika), and install - 
+```
+sudo apt install ros-noetic-libfranka ros-noetic-franka-ros
+```
 
 Replace the following files in the franka emika repo, with the files with the same name from this current repo.
 1. src/franka_ros/franka_example_controllers/src/cartesian_impedance_example_controller.cpp
