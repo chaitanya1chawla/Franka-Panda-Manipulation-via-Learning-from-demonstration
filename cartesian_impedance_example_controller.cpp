@@ -9,7 +9,6 @@
 #include <fstream>
 #include <stdlib.h>
 #include <string>
-//am i allowed to use multiple namespaces in a file
 using namespace std;
 #include <typeinfo>
 
@@ -164,12 +163,12 @@ void CartesianImpedanceExampleController::update(const ros::Time& /*time*/,
   if (flag==0){
 
     fstream newfile;
+    //#####################
     //#--> learned trajectory from DMP_PP needs to be away from her.
     newfile.open("sample_trajctories/trajectory.txt",ios::in);
     string tp; string delimiter = " ";
     size_t pos = 0;
 
-    //array length needs to be changed here to 3 coordinates
     string token[3]; 
     int cc=0;
 
@@ -183,7 +182,7 @@ void CartesianImpedanceExampleController::update(const ros::Time& /*time*/,
       }
       token[i]= tp;
       
-      // taking every 10th point from the trajectory
+      // taking every 7th point from the trajectory
       if(ctr%7==0){
         lit[cc] <<atof(token[0].c_str()), atof(token[1].c_str()), atof(token[2].c_str());
         if(cc!=0){
