@@ -16,6 +16,8 @@ import json
 
 
 # Opening JSON file
+###########################
+#--> in the following lines, put the json file where you put your recorded trajectories (line 54 of webcam_pose_estimation.py)
 with open('/home/chaitanya/catkin_ws/src/franka_ros/json_files/myfile1.json') as openfile:
     # Reading from json file
     json_object= json.load(openfile)
@@ -32,11 +34,13 @@ with open('/home/chaitanya/catkin_ws/src/franka_ros/json_files/myfile4.json') as
 #with open('/home/chaitanya/catkin_ws/src/franka_ros/json_files/myfile5.json') as openfile5:
  #   json_object5 = json.load(openfile5)
 
-# add json_object4 in next line too
+###########################
+#--> add all json_object s in the following list
 json_objs=[ json_object,json_object2, json_object3, json_object4]
 
 
-#change this also, according to the number of trajectories
+###########################
+#--> change this also, according to the number of trajectories
 num_traj = len(json_objs)
 traj_set = []
 t_set = []
@@ -155,10 +159,10 @@ plt.title('Scaled reference frame')
 
 
 # Plot from a given position
-#choosing custom Starting point
+#--> here, you can choose your custom Starting point
 # for bottle pick - MP.x_0 = np.array([0.2, 0.0, 0.06])
 MP.x_0 = np.array([0.0, 0.0, 0.1])
-#choosing custom Ending point
+#--> here, you can choose your custom End point
 MP.x_goal = np.array([0.05, 0.0, 0.6])
 # for bottle pick MP.x_goal = np.array([0.4, 0.0, 0.6])
 x_track, _, _, _ = MP.rollout()
@@ -168,10 +172,9 @@ ax.scatter3D(x_track[:, 0], x_track[:, 1], x_track[:, 2], '-r', color = "red",  
 # plt.ylabel(r'$x_21$')
 plt.title('Unscaled reference frame')
 
-# this path needs to be updated for final project
-with open('/home/chaitanya/catkin_ws/src/franka_ros/franka_example_controllers/src/trajectory.txt', 'w') as f:
+#--> here you can give a name to your learned trajectory, else it will be overwritten on trajectory.txt
+with open('sample_trajectories/trajectory.txt', 'w') as f:
     for idx,count in enumerate(x_track[:, 0]):
-        # needs to be changed for three coordinates
         f.write(str(count) + " " + str(x_track[idx, 1]) + " " + str(x_track[idx, 2]))
         f.write('\n')
 f.close()
