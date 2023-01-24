@@ -151,7 +151,6 @@ void CartesianImpedanceExampleController::starting(const ros::Time& /*time*/) {
 void CartesianImpedanceExampleController::update(const ros::Time& /*time*/,
                                                  const ros::Duration& /*period*/) {
   
-  //"code written by me" till 206
   static int flag=0;
   static double kk=0.0, dist_squared=0.0, dist=0.0;
   static int count=0;
@@ -164,7 +163,7 @@ void CartesianImpedanceExampleController::update(const ros::Time& /*time*/,
 
     fstream newfile;
     //#####################
-    //#--> learned trajectory from DMP_PP needs to be away from her.
+    //#--> learned trajectory from DMP should be input here
     newfile.open("sample_trajctories/trajectory.txt",ios::in);
     string tp; string delimiter = " ";
     size_t pos = 0;
