@@ -14,6 +14,7 @@ import json
 
 
 # Opening JSON file
+###########################
 #--> in the following lines, put the json file where you put your recorded trajectories (line 54 of webcam_pose_estimation.py)
 with open('/home/dhrikarl/PycharmProjects/mediapipe/threeDPoseEstimation/myfile.json') as openfile:
     # Reading from json file
@@ -31,10 +32,12 @@ with open('/home/dhrikarl/PycharmProjects/mediapipe/threeDPoseEstimation/myfile4
 #with open('/home/dhrikarl/PycharmProjects/mediapipe/threeDPoseEstimation/myfile5.json') as openfile5:
  #   json_object5 = json.load(openfile5)
 
+###########################
 #--> add all json_object s in the following list
 json_objs=[ json_object,json_object2, json_object3, json_object4]
 
 
+###########################
 #--> change this also, according to the number of trajectories
 num_traj = 4
 traj_set = []
@@ -166,6 +169,7 @@ ax.scatter3D(x_track[:, 0], x_track[:, 1], x_track[:, 2], '-r', color = "red",  
 #plt.xlabel(r'$x_11$')
 #plt.ylabel(r'$x_21$')
 plt.title('Unscaled reference frame')
+
 '''
 # With noise
 var = 0.0001
