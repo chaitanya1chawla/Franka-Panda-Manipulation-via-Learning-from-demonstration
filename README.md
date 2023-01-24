@@ -20,7 +20,7 @@ Installation -
 pip install -e .
 ```
 
-Clone the original franka_ros repo (by franka emika), and install - 
+Clone the original franka_ros repo (by franka emika), and install (for ros noetic) - 
 ```
 sudo apt install ros-noetic-libfranka ros-noetic-franka-ros
 ```
