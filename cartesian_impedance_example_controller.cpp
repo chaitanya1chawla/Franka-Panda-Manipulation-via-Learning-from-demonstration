@@ -192,7 +192,7 @@ void CartesianImpedanceExampleController::update(const ros::Time& /*time*/,
   if (flag==0){
 
     fstream newfile;
-    newfile.open("trajectory.txt",ios::in);
+    newfile.open("/home/chaitanya/catkin_ws/src/franka_ros/franka_example_controllers/src/trajectory.txt",ios::in);
     string tp; string delimiter = " ";
     size_t pos = 0;
 
