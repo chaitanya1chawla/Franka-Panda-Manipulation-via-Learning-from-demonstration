@@ -14,6 +14,7 @@ mp_pose = mp.solutions.pose
 
 
 # For webcam input:
+###########################
 #-->  '#put 0 for webcam input or "" video address
 #--> different videos need to be uploaded manually, and name of json file also needs to be respectively updated (line)
 cap = cv2.VideoCapture("/home/dhrikarl/Videos/Webcam/lifting_object_4.webm")
@@ -34,6 +35,7 @@ with mp_pose.Pose(
     ax.view_init(elev=20, azim=60)
     colors = np.array(range(140))
     k = 0
+###########################
 #--> #make this false for camera input
     FLAG_SAVE = True
 
@@ -50,6 +52,7 @@ with mp_pose.Pose(
     #file1 = open("points_for_dmps.txt", "w")
 
     # using json file to record data points to be used in dmp
+###########################
 #--> update the following file name for each trajectory
     out_file = open("myfile4.json", "w")
 
@@ -62,6 +65,7 @@ with mp_pose.Pose(
         success, image = cap.read()
         if not success:
             print("Ignoring empty camera frame.")
+###########################
 #-->        # If loading a video, use 'break' instead of 'continue'.
             break
             #continue
