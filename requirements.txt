@@ -1,0 +1,15 @@
+dmp==2018.11.6.1
+interactive_markers==1.11.5
+matplotlib==3.6.1
+mediapipe==0.8.11
+numpy==1.19.3
+opencv_python==4.6.0.66
+parametrized==0.8.1
+plot_utils==0.3.2
+rosunit==1.14.9
+scipy==1.5.4
+sensor_msgs==1.12.8
+tf==1.0.0
+tqdm==4.64.1
+urdf_parser_py==0.0.4
+urdfdom_py==0.4.6
