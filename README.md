@@ -3,12 +3,12 @@
 ## About
 This repository is for the research internship done at TU Munich, under MSc Esteve Valls and Prof Dongheui Lee. 
 
-The main goal of this project is to control a Franka Panda Arm, by feeding in trajectories performed by right palm of user. 
+The main goal of this project is to control a Franka Panda Arm, by feeding in trajectories performed by the right palm of user. 
 
 The project is divided into 3 subparts -
 1. 3D Pose Estimation and Recording Trajectories of right palm of user through MediaPipe
 2. After recording same motion multiple times, we get a learned trajectory with the help of DMPs
-3. 
+3. This learned trajectory is then implemented on a Franka Panda Simulation in Gazebo
 
 Link to [Paper](https://docs.google.com/document/d/15dwVdk-WKLVMnLVukNsmk3NElljAcn5vlwIM2_LcbXc/edit?usp=sharing).
 Link to [Final Presentation](https://1drv.ms/p/s!AgS-uMOuiZu9hQuuwWgZkoKYTLNy).
@@ -22,19 +22,14 @@ Replace the following files in the franka emika repo, with the files with the sa
 3. src/franka_ros/franka_gazebo/world/stone.sdf
 
 ### Step 1 - 3D Pose Estimation and Recording Trajectories
-Follow the instructions given in webcam_pose_estimation.py to adjust it depending on whether you want to use our default webcam, or a pre-recorded video for recording a trajectory.
+Follow the instructions (marked by #-->) given in webcam_pose_estimation.py to adjust it depending on whether you want to use your default webcam, or a pre-recorded video for recording a trajectory.
 Multiple trajectories (4-5) need to be recorded to get a good learned Trajectory in the next step.
 
 ### Step 2 - Obtaining Learned Trajectory with help of DMPs
-Follow the instructions given in demo_regression.py to get the learned trajectory from the previously recorded trajectories.
-???where is the trajectory going to???
-
+Follow the instructions (marked by #-->) given in demo_regression.py to get the learned trajectory from the previously recorded trajectories.
 
 ### Step 3 - Implementing learned Trajectory on Gazebo Simulator of Franka Panda Arm
-
-Put the trajectory_bottle_pick.txt and trajectory_s_motion.txt (or your custom learned trajectory) at the same level as above controller.
-
-And update the trajectory file name in src/franka_ros/franka_example_controllers/src/cartesian_impedance_example_controller.cpp, in line 195, depending on whichever trajectory you are using.
+Update the trajectory file name in src/franka_ros/franka_example_controllers/src/cartesian_impedance_example_controller.cpp (line 195), depending on whichever trajectory you are using (default is trajectory.txt - generated in demo_regression_IP.py (line 176))
 
 
 To run - 
