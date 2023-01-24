@@ -1,7 +1,6 @@
 // Copyright (c) 2017 Franka Emika GmbH
 // Use of this source code is governed by the Apache-2.0 license, see LICENSE
 
-//"code written by me" is written over some lines of code
 #include <franka_example_controllers/cartesian_impedance_example_controller.h>
 
 #include <cmath>
@@ -35,7 +34,6 @@ bool CartesianImpedanceExampleController::init(hardware_interface::RobotHW* robo
   std::vector<double> cartesian_damping_vector;
 
 
-//understand this
   sub_equilibrium_pose_ = node_handle.subscribe(
       "equilibrium_pose", 20, &CartesianImpedanceExampleController::equilibriumPoseCallback, this,
       ros::TransportHints().reliable().tcpNoDelay());
@@ -112,10 +110,8 @@ bool CartesianImpedanceExampleController::init(hardware_interface::RobotHW* robo
       boost::bind(&CartesianImpedanceExampleController::complianceParamCallback, this, _1, _2));
 
   position_d_.setZero();
-  // position_d_ << 1.0,1.0,1.0;
   orientation_d_.coeffs() << 0.0, 0.0, 0.0, 1.0;
   position_d_target_.setZero();
-  // position_d_target_<< 1.0,1.0,1.0;
   orientation_d_target_.coeffs() << 0.0, 0.0, 0.0, 1.0;
 
 
@@ -141,41 +137,17 @@ void CartesianImpedanceExampleController::starting(const ros::Time& /*time*/) {
 
   // set equilibrium point to current state
   position_d_ = initial_transform.translation();
-  //cout<<"position d = initial_transform.translation() = "<< position_d_;
-  //position_d_ = (1;1;1;);
   orientation_d_ = Eigen::Quaterniond(initial_transform.rotation());
   position_d_target_ = initial_transform.translation();
-  //cout<<"position_d_target = initial_transform.translation() = "<< position_d_target_;
   orientation_d_target_ = Eigen::Quaterniond(initial_transform.rotation());
 
   // set nullspace equilibrium configuration to initial q
   q_d_nullspace_ = q_initial;
 }
-//ros::Time begin = ros::Time::now();
-
 //Eigen::Vector3d lit[3];
   
 
 
-/*
-  int ii=0;
-  for(ii =-50; ii < 51; ii=ii+100)
-  {
-     int j=sqrt(2500-ii^2);
-     double yy=(ii)/100; //double zz = 0.5 + j/100;
-     double zz = 0.5;
-     lit[ii] << 0.0,
-                yy,
-                zz; 
-  }
-
-
-void CartesianImpedanceExampleController::blabla(){
-
-  k=0;
-
-}
-*/
 
 void CartesianImpedanceExampleController::update(const ros::Time& /*time*/,
                                                  const ros::Duration& /*period*/) {
@@ -192,7 +164,8 @@ void CartesianImpedanceExampleController::update(const ros::Time& /*time*/,
   if (flag==0){
 
     fstream newfile;
-    newfile.open("/home/chaitanya/catkin_ws/src/franka_ros/franka_example_controllers/src/trajectory.txt",ios::in);
+    //#--> learned trajectory from DMP_PP needs to be away from her.
+    newfile.open("sample_trajctories/trajectory.txt",ios::in);
     string tp; string delimiter = " ";
     size_t pos = 0;
 
@@ -237,20 +210,8 @@ void CartesianImpedanceExampleController::update(const ros::Time& /*time*/,
       model_handle_->getZeroJacobian(franka::Frame::kEndEffector);
 
   
-  //important!!!!
   //position_d_target_ << 0.0,0.5,0.5;
-/* 
-  int ii=0;
-  for(ii =-50; ii < 51; ii=ii+100)
-  {
-     int j=sqrt(2500-ii^2);
-     double yy=(ii)/100; //double zz = 0.5 + j/100;
-     double zz = 0.5;
-     lit[ii] << 0.0,
-                yy,
-                zz; 
-  }
-*/
+
   // convert to Eigen
   Eigen::Map<Eigen::Matrix<double, 7, 1>> coriolis(coriolis_array.data());
   Eigen::Map<Eigen::Matrix<double, 6, 7>> jacobian(jacobian_array.data());
@@ -282,10 +243,6 @@ void CartesianImpedanceExampleController::update(const ros::Time& /*time*/,
   //steps to go from one point to another in trajectory
   cout<<"position_d_target_ = "<<position_d_target_<<"\n";
   cout<<"error ="<<error_x<<"\n";
-//  if(begin_t > 1.50 && begin_t < 4.00){
-//    position_d_target_ << 0.24, -0.04, 0.03;
-//  }
-
 
   if(begin_t > 3.00){
     //position_d_target_ = lit[2];
@@ -300,25 +257,8 @@ void CartesianImpedanceExampleController::update(const ros::Time& /*time*/,
       cout<<"position_d_target_ = "<<position_d_target_<<"\n";
       cout<<"error ="<<error_x<<"\n";
       //sleep_for(seconds(2));
-    
-//    if(lit[count] == lit[flag_var]){
-//      position_d_target_<< 0.03, 0.00, 0.62;
-//    }
     }
     cout<<"count = "<<count<<"\n";
-/*
-    if( (begin_t > kk + 4.00 ) && ( begin_t < kk + 5.00) ){
-    cout<<"position_d_target_ = "<<position_d_target_<<"\n";
-    cout<<"error ="<<error_x<<"\n";
-    position_d_target_ = lit[count];
-    }
-
-    else{
-      cout<<"scheisse";
-      kk=kk+1.0;
-      count++;
-    }
-  */
 
   }  
 
