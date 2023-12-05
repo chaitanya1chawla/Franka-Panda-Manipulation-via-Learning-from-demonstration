@@ -1,5 +1,3 @@
-#lines written by me
-#18-40, 43-48, 96-116,120-121, and whole code was converted to 3d by 2d
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import rc
